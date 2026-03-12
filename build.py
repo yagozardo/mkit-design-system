@@ -19,6 +19,14 @@ ASSETS  = SITE / "assets"
 tokens = json.loads((ASSETS / "tokens.json").read_text())
 ia     = json.loads((ASSETS / "ia.json").read_text())
 
+# ─── Base path (set SITE_BASE env var for non-root deployments) ───────────────
+# Example: SITE_BASE=/mkit-design-system python3 build.py
+BASE_PATH = os.environ.get("SITE_BASE", "").rstrip("/")
+
+def url(path: str) -> str:
+    """Prefix a site-root-relative path with BASE_PATH."""
+    return BASE_PATH + path
+
 # ─── 1. GENERATE tokens.css ───────────────────────────────────────────────────
 def build_tokens_css():
     lines = [":root {"]
@@ -133,26 +141,26 @@ def build_sidebar(active_path: str) -> str:
     """Build the full sidebar HTML."""
     # Collect component files for the Components group
     comp_files = sorted((CONTENT / "components").glob("*.md"))
-    comp_items = [{"label": f.stem.replace("-", " ").title(), "path": f"/components/{f.stem}.html"}
+    comp_items = [{"label": f.stem.replace("-", " ").title(), "path": url(f"/components/{f.stem}.html")}
                   for f in comp_files]
 
     nav_groups = [
         {
             "label": "Overview",
             "items": [
-                {"label": "Introduction",    "path": "/index.html"},
-                {"label": "Getting Started", "path": "/resources/getting-started.html"},
+                {"label": "Introduction",    "path": url("/index.html")},
+                {"label": "Getting Started", "path": url("/resources/getting-started.html")},
             ]
         },
         {
             "label": "Foundations",
             "items": [
-                {"label": "Color",           "path": "/foundations/color.html"},
-                {"label": "Typography",      "path": "/foundations/typography.html"},
-                {"label": "Spacing",         "path": "/foundations/spacing.html"},
-                {"label": "Elevation",       "path": "/foundations/elevation.html"},
-                {"label": "Borders",         "path": "/foundations/borders.html"},
-                {"label": "Motion",          "path": "/foundations/motion.html"},
+                {"label": "Color",           "path": url("/foundations/color.html")},
+                {"label": "Typography",      "path": url("/foundations/typography.html")},
+                {"label": "Spacing",         "path": url("/foundations/spacing.html")},
+                {"label": "Elevation",       "path": url("/foundations/elevation.html")},
+                {"label": "Borders",         "path": url("/foundations/borders.html")},
+                {"label": "Motion",          "path": url("/foundations/motion.html")},
             ]
         },
         {
@@ -162,7 +170,7 @@ def build_sidebar(active_path: str) -> str:
         {
             "label": "Icons",
             "items": [
-                {"label": "Icon Library", "path": "/icons/index.html"},
+                {"label": "Icon Library", "path": url("/icons/index.html")},
             ]
         },
     ]
@@ -491,10 +499,10 @@ def render_home_page(md_text: str) -> str:
     intro_html = md_to_html(md_text)
     comp_count = len(list((CONTENT / "components").glob("*.md")))
     cards = [
-        ("🎨", "Foundations", "Color, typography, spacing, elevation, and borders.", "/foundations/color.html"),
-        ("🧩", "Components", f"{comp_count} reusable UI building blocks.", "/components/button.html"),
-        ("✦",  "Icons",      "Lucide open-source icon library.", "/icons/index.html"),
-        ("📖", "Getting Started", "How to use Figma libraries and tokens.", "/resources/getting-started.html"),
+        ("🎨", "Foundations", "Color, typography, spacing, elevation, and borders.", url("/foundations/color.html")),
+        ("🧩", "Components", f"{comp_count} reusable UI building blocks.", url("/components/button.html")),
+        ("✦",  "Icons",      "Lucide open-source icon library.", url("/icons/index.html")),
+        ("📖", "Getting Started", "How to use Figma libraries and tokens.", url("/resources/getting-started.html")),
     ]
     cards_html = '<div class="quick-links">'
     for icon, title, desc, href in cards:
@@ -577,8 +585,8 @@ def main():
     write_page(
         SITE / "index.html", "Introduction",
         render_home_page(md),
-        "/index.html",
-        [("Introduction", "/index.html")],
+        url("/index.html"),
+        [("Introduction", url("/index.html"))],
         depth=0
     )
 
@@ -587,8 +595,8 @@ def main():
     write_page(
         SITE / "resources" / "getting-started.html", "Getting Started",
         md_to_html(md),
-        "/resources/getting-started.html",
-        [("Introduction", "/index.html"), ("Getting Started", "/resources/getting-started.html")],
+        url("/resources/getting-started.html"),
+        [("Introduction", url("/index.html")), ("Getting Started", url("/resources/getting-started.html"))],
         depth=1
     )
 
@@ -606,8 +614,8 @@ def main():
         write_page(
             SITE / "foundations" / f"{slug}.html", label,
             renderer(md),
-            f"/foundations/{slug}.html",
-            [("Introduction", "/index.html"), ("Foundations", "/foundations/color.html"), (label, f"/foundations/{slug}.html")],
+            url(f"/foundations/{slug}.html"),
+            [("Introduction", url("/index.html")), ("Foundations", url("/foundations/color.html")), (label, url(f"/foundations/{slug}.html"))],
             depth=1
         )
 
@@ -619,8 +627,8 @@ def main():
         write_page(
             SITE / "components" / f"{slug}.html", label,
             render_component_page(md, slug),
-            f"/components/{slug}.html",
-            [("Introduction", "/index.html"), ("Components", "/index.html"), (label, f"/components/{slug}.html")],
+            url(f"/components/{slug}.html"),
+            [("Introduction", url("/index.html")), ("Components", url("/index.html")), (label, url(f"/components/{slug}.html"))],
             depth=1
         )
 
@@ -629,8 +637,8 @@ def main():
     write_page(
         SITE / "icons" / "index.html", "Icon Library",
         md_to_html(md),
-        "/icons/index.html",
-        [("Introduction", "/index.html"), ("Icons", "/icons/index.html")],
+        url("/icons/index.html"),
+        [("Introduction", url("/index.html")), ("Icons", url("/icons/index.html"))],
         depth=1
     )
 
