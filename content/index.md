@@ -1,6 +1,6 @@
 # MKIT Design System
 
-The Winsupply Marketing IT UX Design System is a shared library of design decisions, reusable components, and guidelines that help teams build consistent, accessible, and on-brand digital experiences.
+The MKIT Design System is a shared library of design decisions, reusable components, and guidelines that helps our team build consistent, accessible, and on-brand digital experiences across Winsupply's eCommerce platform.
 
 ## What's inside
 
