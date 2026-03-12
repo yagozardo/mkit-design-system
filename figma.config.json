@@ -1,0 +1,9 @@
+{
+  "files": {
+    "tokens": "6HCZSlgXsmODj59ldL9IkA",
+    "iconography": "ciPYSf4ASoWO8yyfhtD2pq",
+    "base-components": "cBzqjlyUoVJczHoLvQPXS9",
+    "advanced-components": "rF3f8JHhAXJ4wI8X3PMKpJ"
+  },
+  "outputFormat": "static-html-tailwind"
+}

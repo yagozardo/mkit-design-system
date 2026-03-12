@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkbox — eComm Design System</title>
+  <link rel="preconnect" href="https://fonts.bunny.net">
+  <link href="https://fonts.bunny.net/css?family=inter:400,600&display=swap" rel="stylesheet">
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/tokens.css">
+  <style>
+    /* Layout */
+    .layout { display: flex; height: 100vh; overflow: hidden; }
+    .sidebar {
+      width: 240px; min-width: 240px; height: 100vh; overflow-y: auto;
+      background: var(--docs-bg-sidebar); border-right: 1px solid var(--docs-border);
+      display: flex; flex-direction: column;
+    }
+    .sidebar-logo {
+      padding: 20px 16px 16px; border-bottom: 1px solid var(--docs-border);
+      font-family: var(--font-heading); font-weight: 700; font-size: 1rem;
+      color: var(--docs-text); line-height: 1.2;
+    }
+    .sidebar-logo span { display: block; font-family: var(--font-body); font-weight: 400;
+      font-size: 0.75rem; color: var(--docs-text-muted); margin-top: 2px; }
+    .sidebar-nav { padding: 8px 0 24px; flex: 1; }
+    .nav-group { margin-bottom: 4px; }
+    .nav-group-label {
+      padding: 12px 16px 4px; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--docs-text-muted);
+    }
+    .nav-item {
+      display: block; padding: 6px 16px; font-size: 0.8125rem; color: var(--docs-text-secondary);
+      text-decoration: none; border-radius: 0; transition: background 0.1s, color 0.1s;
+      line-height: 1.4;
+    }
+    .nav-item:hover { background: var(--docs-bg); color: var(--docs-text); text-decoration: none; }
+    .nav-item.active {
+      background: var(--docs-bg-active); color: var(--docs-accent);
+      font-weight: 600; border-right: 2px solid var(--docs-accent);
+    }
+    .main { flex: 1; overflow-y: auto; display: flex; flex-direction: column; min-width: 0; }
+    .topbar {
+      padding: 12px 40px; border-bottom: 1px solid var(--docs-border);
+      background: var(--docs-bg-surface); position: sticky; top: 0; z-index: 10;
+    }
+    .content-area { padding: 40px; max-width: 900px; }
+
+    /* Breadcrumbs */
+    .breadcrumbs { font-size: 0.8125rem; color: var(--docs-text-muted); display: flex; gap: 6px; align-items: center; }
+    .breadcrumbs a { color: var(--docs-text-muted); }
+    .breadcrumbs a:hover { color: var(--docs-accent); }
+    .bc-current { color: var(--docs-text-secondary); }
+    .bc-sep { color: var(--docs-border); }
+
+    /* Token cards */
+    .swatch-group { margin-bottom: 2rem; }
+    .swatch-group h3 { margin-bottom: 0.75rem; font-size: 0.9375rem; }
+    .swatch-row { display: flex; gap: 4px; flex-wrap: wrap; }
+    .swatch {
+      position: relative; width: 56px; cursor: pointer;
+      transition: transform 0.1s;
+    }
+    .swatch:hover { transform: translateY(-2px); }
+    .swatch-chip {
+      height: 40px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.08);
+    }
+    .swatch-label { font-size: 0.65rem; color: var(--docs-text-muted); margin-top: 3px;
+      text-align: center; line-height: 1.2; }
+
+    /* Semantic color table swatch */
+    .sem-swatch { width: 20px; height: 20px; border-radius: 50%;
+      border: 1px solid rgba(0,0,0,0.1); display: inline-block; flex-shrink: 0; }
+
+    /* Typography specimens */
+    .type-specimen { margin: 2rem 0; }
+    .type-specimen-label { font-size: 0.75rem; font-weight: 600;
+      color: var(--docs-text-muted); margin-bottom: 6px; letter-spacing: 0.04em; text-transform: uppercase; }
+    .type-specimen-text { color: var(--docs-text); }
+
+    /* Spacing ruler */
+    .spacing-bar { background: var(--docs-accent); height: 8px; border-radius: 4px;
+      display: inline-block; opacity: 0.7; }
+
+    /* Radius preview */
+    .radius-preview { display: flex; gap: 20px; flex-wrap: wrap; margin: 1.5rem 0; }
+    .radius-swatch { text-align: center; }
+    .radius-box { width: 64px; height: 64px; background: var(--docs-bg-active);
+      border: 2px solid var(--docs-accent); margin: 0 auto 8px; }
+    .radius-label { font-size: 0.75rem; color: var(--docs-text-muted); }
+
+    /* Component preview box */
+    .component-preview {
+      background: var(--docs-table-head); border: 1px dashed var(--docs-border);
+      border-radius: 8px; padding: 40px; text-align: center; margin-bottom: 2rem;
+      color: var(--docs-text-muted); font-size: 0.875rem;
+    }
+    .component-preview strong { display: block; font-size: 0.8125rem; margin-bottom: 6px; color: var(--docs-text-secondary); }
+
+    /* Do/Don't sections */
+    .do-dont { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0; }
+    .do-block { border-left: 3px solid #16a34a; padding: 0.75rem 1rem; background: #f0fdf4; border-radius: 0 6px 6px 0; }
+    .dont-block { border-left: 3px solid #dc2626; padding: 0.75rem 1rem; background: #fef2f2; border-radius: 0 6px 6px 0; }
+    .do-block h4, .dont-block h4 { margin: 0 0 0.5rem; font-size: 0.8125rem; font-weight: 600; }
+    .do-block h4 { color: #15803d; }
+    .dont-block h4 { color: #b91c1c; }
+    .do-block ul, .dont-block ul { margin: 0; padding-left: 1.2rem; font-size: 0.85rem; }
+
+    /* Home quick links */
+    .quick-links { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; margin: 2rem 0; }
+    .quick-link-card {
+      border: 1px solid var(--docs-border); border-radius: 8px; padding: 20px;
+      background: var(--docs-bg-surface); text-decoration: none; color: var(--docs-text);
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .quick-link-card:hover { border-color: var(--docs-accent); box-shadow: 0 2px 8px rgba(0,114,207,0.12); text-decoration: none; }
+    .quick-link-card .card-icon { font-size: 1.5rem; margin-bottom: 10px; }
+    .quick-link-card .card-title { font-family: var(--font-heading); font-weight: 700; font-size: 1rem; margin-bottom: 4px; }
+    .quick-link-card .card-desc { font-size: 0.8125rem; color: var(--docs-text-secondary); }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .sidebar { display: none; }
+      .content-area { padding: 20px; }
+      .do-dont { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar" aria-label="Main navigation">
+      <div class="sidebar-logo">
+        eComm DS
+        <span>Design System</span>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-group">
+  <div class="nav-group-label">Overview</div>
+  <a href="/index.html" class="nav-item">Introduction</a>
+  <a href="/resources/getting-started.html" class="nav-item">Getting Started</a>
+</div>
+<div class="nav-group">
+  <div class="nav-group-label">Foundations</div>
+  <a href="/foundations/color.html" class="nav-item">Color</a>
+  <a href="/foundations/typography.html" class="nav-item">Typography</a>
+  <a href="/foundations/spacing.html" class="nav-item">Spacing</a>
+  <a href="/foundations/elevation.html" class="nav-item">Elevation</a>
+  <a href="/foundations/borders.html" class="nav-item">Borders</a>
+  <a href="/foundations/motion.html" class="nav-item">Motion</a>
+</div>
+<div class="nav-group">
+  <div class="nav-group-label">Components</div>
+  <a href="/components/accordion.html" class="nav-item">Accordion</a>
+  <a href="/components/add-to-cart-button.html" class="nav-item">Add To Cart Button</a>
+  <a href="/components/badge.html" class="nav-item">Badge</a>
+  <a href="/components/breadcrumb.html" class="nav-item">Breadcrumb</a>
+  <a href="/components/button-circle.html" class="nav-item">Button Circle</a>
+  <a href="/components/button.html" class="nav-item">Button</a>
+  <a href="/components/checkbox.html" class="nav-item active">Checkbox</a>
+  <a href="/components/chip.html" class="nav-item">Chip</a>
+  <a href="/components/country-badge.html" class="nav-item">Country Badge</a>
+  <a href="/components/drawer.html" class="nav-item">Drawer</a>
+  <a href="/components/dropdown.html" class="nav-item">Dropdown</a>
+  <a href="/components/footer.html" class="nav-item">Footer</a>
+  <a href="/components/image-tiles.html" class="nav-item">Image Tiles</a>
+  <a href="/components/input.html" class="nav-item">Input</a>
+  <a href="/components/location-card.html" class="nav-item">Location Card</a>
+  <a href="/components/maintenance-banner.html" class="nav-item">Maintenance Banner</a>
+  <a href="/components/modal.html" class="nav-item">Modal</a>
+  <a href="/components/navbar.html" class="nav-item">Navbar</a>
+  <a href="/components/pill.html" class="nav-item">Pill</a>
+  <a href="/components/popover.html" class="nav-item">Popover</a>
+  <a href="/components/product-carousel.html" class="nav-item">Product Carousel</a>
+  <a href="/components/products.html" class="nav-item">Products</a>
+  <a href="/components/radio.html" class="nav-item">Radio</a>
+  <a href="/components/segmented-control.html" class="nav-item">Segmented Control</a>
+  <a href="/components/select-menu.html" class="nav-item">Select Menu</a>
+  <a href="/components/spinner.html" class="nav-item">Spinner</a>
+  <a href="/components/tabs.html" class="nav-item">Tabs</a>
+  <a href="/components/tag.html" class="nav-item">Tag</a>
+  <a href="/components/tips.html" class="nav-item">Tips</a>
+  <a href="/components/toast.html" class="nav-item">Toast</a>
+  <a href="/components/toggle.html" class="nav-item">Toggle</a>
+  <a href="/components/tooltip.html" class="nav-item">Tooltip</a>
+  <a href="/components/tree-view.html" class="nav-item">Tree View</a>
+</div>
+<div class="nav-group">
+  <div class="nav-group-label">Icons</div>
+  <a href="/icons/index.html" class="nav-item">Icon Library</a>
+</div>
+      </nav>
+    </aside>
+    <div class="main">
+      <div class="topbar">
+        <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/index.html">Introduction</a><span class="bc-sep">›</span><a href="/components/button.html">Components</a><span class="bc-sep">›</span><span class="bc-current">Checkbox</span></nav>
+      </div>
+      <div class="content-area">
+        <h1 id="checkbox">Checkbox</h1><div class="component-preview" style="background:#fff;padding:0;overflow:hidden;">  <img src="../assets/images/checkbox.png" alt="checkbox preview"    style="width:100%;height:auto;display:block;"></div>
+<p>A binary or multi-select input that lets users choose one or more independent options from a list. Checkboxes are always used within a form context.</p>
+<p><strong>Figma variant properties:</strong> State=Default/Hover/Focused/Checked/Indeterminate/Disabled/Error</p>
+<hr />
+<h2 id="preview">Preview</h2>
+<blockquote>
+<p>Component preview image — to be added manually from Figma export.</p>
+</blockquote>
+<hr />
+<h2 id="variants">Variants</h2>
+<table>
+<thead>
+<tr>
+<th>Variant</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Unchecked</td>
+</tr>
+<tr>
+<td>Checked</td>
+</tr>
+<tr>
+<td>Indeterminate</td>
+</tr>
+<tr>
+<td>Disabled</td>
+</tr>
+<tr>
+<td>Error state</td>
+</tr>
+<tr>
+<td>With helper text</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="props">Props</h2>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>label</code></td>
+<td>string</td>
+<td>""</td>
+<td>Visible label for the checkbox</td>
+</tr>
+<tr>
+<td><code>checked</code></td>
+<td>boolean</td>
+<td>false</td>
+<td>Checked state</td>
+</tr>
+<tr>
+<td><code>indeterminate</code></td>
+<td>boolean</td>
+<td>false</td>
+<td>Partially checked (e.g., parent of mixed children)</td>
+</tr>
+<tr>
+<td><code>disabled</code></td>
+<td>boolean</td>
+<td>false</td>
+<td>Disabled state</td>
+</tr>
+<tr>
+<td><code>error</code></td>
+<td>boolean</td>
+<td>false</td>
+<td>Error state with error message</td>
+</tr>
+<tr>
+<td><code>helperText</code></td>
+<td>string</td>
+<td>null</td>
+<td>Optional helper text below label</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="usage">Usage</h2>
+<h3 id="do">Do</h3>
+<ul>
+<li>Use for selecting multiple independent options from a list.</li>
+<li>Group related checkboxes under a shared <code>&lt;fieldset&gt;</code> and <code>&lt;legend&gt;</code>.</li>
+<li>Use Indeterminate when some (not all) children are selected.</li>
+</ul>
+<h3 id="dont">Don't</h3>
+<ul>
+<li>Don't use checkboxes for mutually exclusive options — use Radio instead.</li>
+<li>Don't use a single standalone checkbox as a 'toggle' — use the Toggle component.</li>
+<li>Don't submit a form without clear indication of which items are selected.</li>
+</ul>
+<hr />
+<h2 id="accessibility">Accessibility</h2>
+<ul>
+<li>Use <code>&lt;input type='checkbox'&gt;</code> with an associated <code>&lt;label&gt;</code>.</li>
+<li>Support Space to toggle.</li>
+<li>Announce state changes with <code>aria-checked</code>.</li>
+<li>Include <code>aria-describedby</code> for helper/error text.</li>
+</ul>
+<hr />
+<h2 id="tokens-used">Tokens Used</h2>
+<ul>
+<li><code>color.semantic.Background.Brand</code></li>
+<li><code>color.semantic.Border.Primary</code></li>
+<li><code>color.semantic.Border.Focus</code></li>
+<li><code>borderRadius.XS</code></li>
+<li><code>typography.text.M.regular</code></li>
+</ul>
+      </div>
+    </div>
+  </div>
+  <script>
+    // Token copy-on-click
+    document.querySelectorAll('code').forEach(el => {
+      if (el.closest('pre')) return;
+      el.title = 'Click to copy';
+      el.addEventListener('click', () => {
+        navigator.clipboard.writeText(el.textContent).catch(() => {});
+        el.classList.add('copied');
+        setTimeout(() => el.classList.remove('copied'), 1200);
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,135 @@
+{
+  "_meta": {
+    "phase": "2",
+    "createdAt": "2026-03-11",
+    "basedOn": ["Shopify Polaris", "Material Design 3", "Atlassian Design System", "Carbon Design System"]
+  },
+
+  "navigation": {
+    "type": "fixed-left-sidebar",
+    "width": "240px",
+    "groups": [
+      {
+        "label": "Overview",
+        "items": [
+          { "label": "Introduction",    "path": "index.html" },
+          { "label": "Getting Started", "path": "resources/getting-started.html" }
+        ]
+      },
+      {
+        "label": "Foundations",
+        "items": [
+          { "label": "Color",          "path": "foundations/color.html" },
+          { "label": "Typography",     "path": "foundations/typography.html" },
+          { "label": "Spacing",        "path": "foundations/spacing.html" },
+          { "label": "Elevation",      "path": "foundations/elevation.html" },
+          { "label": "Border & Radius","path": "foundations/borders.html" },
+          { "label": "Motion",         "path": "foundations/motion.html" }
+        ]
+      },
+      {
+        "label": "Components",
+        "items": "auto-generated from Base + Advanced Components Figma files"
+      },
+      {
+        "label": "Icons",
+        "items": [
+          { "label": "Icon Library", "path": "icons/index.html" }
+        ]
+      }
+    ]
+  },
+
+  "pageTemplates": {
+    "home": {
+      "sections": [
+        "hero — system name + tagline",
+        "quick-links — Foundations, Components, Icons, Getting Started cards",
+        "recently-updated — last 4 changed components (future)"
+      ]
+    },
+
+    "foundationToken": {
+      "sections": [
+        "page-header — title + 1-sentence description",
+        "token-table — token name | swatch/preview | value | usage notes",
+        "usage-guidelines — when to use each group",
+        "do-dont — 2-column examples (optional per page)"
+      ],
+      "tokenTableColumns": {
+        "color":      ["swatch", "token-name", "hex-value", "usage"],
+        "typography": ["specimen", "token-name", "font/size/weight/lh", "usage"],
+        "spacing":    ["visual-bar", "token-name", "px-value", "multiplier"],
+        "elevation":  ["shadow-preview", "token-name", "css-value", "usage"],
+        "borders":    ["preview", "token-name", "value", "usage"]
+      }
+    },
+
+    "component": {
+      "sections": [
+        "page-header — component name + short description",
+        "preview — static image export from Figma (added manually later)",
+        "variants — grid of variant states with labels",
+        "usage — when to use / when not to use",
+        "anatomy — labeled diagram (static image, added manually)",
+        "props-table — property | type | default | description",
+        "accessibility — baseline notes (keyboard, ARIA role, contrast)",
+        "tokens-used — which design tokens this component references"
+      ]
+    },
+
+    "iconLibrary": {
+      "sections": [
+        "page-header",
+        "search-filter — live filter by name/tag",
+        "icon-grid — icon | name | copy-svg button",
+        "usage-guidelines"
+      ]
+    }
+  },
+
+  "colorPageStructure": {
+    "sections": [
+      {
+        "id": "primitive",
+        "title": "Primitive Colors",
+        "description": "Raw color palette — 14 groups, steps 0–100",
+        "display": "swatch-grid-grouped",
+        "groups": ["Blue","Cyan","Grape","Green","Lime","Magenta","Neutral","Orange","Red","Teal","Teal","Violet","Yellow","Translucid Black","Translucid White"]
+      },
+      {
+        "id": "semantic",
+        "title": "Semantic Colors",
+        "description": "Mapped tokens by role — Background, Content, Border",
+        "display": "token-table-by-category",
+        "note": "Dark-primary theme — Background/Primary is near-black (#191C1E)"
+      }
+    ]
+  },
+
+  "globalPatterns": {
+    "colorScheme": "dark-primary (Background/Primary = #191C1E, Content/Primary = #FCFDFD)",
+    "brandFonts": ["Satoshi (headings)", "Inter (body/UI)"],
+    "breadcrumbs": true,
+    "searchBar": false,
+    "mobileNav": "hamburger-drawer",
+    "codeSnippets": false,
+    "darkModeToggle": false,
+    "tokenCopyOnClick": true
+  },
+
+  "fileMap": {
+    "index.html":                        "Home / Overview",
+    "resources/getting-started.html":    "Getting Started",
+    "foundations/color.html":            "Color tokens (primitive + semantic)",
+    "foundations/typography.html":       "Type scale + font specimens",
+    "foundations/spacing.html":          "Spacing scale",
+    "foundations/elevation.html":        "Shadow/elevation levels",
+    "foundations/borders.html":          "Border radius + border width",
+    "foundations/motion.html":           "Motion tokens (TBD — not in Tokens file)",
+    "components/[name].html":            "One file per component — auto-generated Phase 3",
+    "icons/index.html":                  "Lucide icon library browser",
+    "assets/tokens.json":                "Source of truth for all token values",
+    "assets/tailwind.css":               "Generated Tailwind config from tokens"
+  }
+}
