@@ -1,4 +1,4 @@
-# eComm Design System
+# MKIT Design System
 
 The Winsupply Marketing IT UX Design System is a shared library of design decisions, reusable components, and guidelines that help teams build consistent, accessible, and on-brand digital experiences.
 
@@ -6,10 +6,10 @@ The Winsupply Marketing IT UX Design System is a shared library of design decisi
 
 | Section | Description |
 |---|---|
-| [Foundations](foundations/color.md) | Color, typography, spacing, elevation, borders |
-| [Components](components/) | Ready-to-use UI building blocks |
-| [Icons](icons/index.md) | Lucide icon library |
-| [Getting Started](resources/getting-started.md) | How to use the Figma libraries |
+| [Foundations](foundations/color.html) | Color, typography, spacing, elevation, borders |
+| [Components](components/button.html) | Ready-to-use UI building blocks |
+| [Icons](icons/index.html) | Lucide icon library |
+| [Getting Started](resources/getting-started.html) | How to use the Figma libraries |
 
 ## Design Principles
 

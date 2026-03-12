@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Select Menu — eComm Design System</title>
+  <title>Quantity Box — MKIT Design System</title>
   <link rel="preconnect" href="https://fonts.bunny.net">
   <link href="https://fonts.bunny.net/css?family=inter:400,600&display=swap" rel="stylesheet">
   <link href="https://api.fontshare.com/v2/css?f[]=satoshi@700&display=swap" rel="stylesheet">
@@ -130,7 +130,7 @@
   <div class="layout">
     <aside class="sidebar" aria-label="Main navigation">
       <div class="sidebar-logo">
-        eComm DS
+        MKIT DS
         <span>Design System</span>
       </div>
       <nav class="sidebar-nav">
@@ -172,9 +172,9 @@
   <a href="/components/popover.html" class="nav-item">Popover</a>
   <a href="/components/product-carousel.html" class="nav-item">Product Carousel</a>
   <a href="/components/products.html" class="nav-item">Products</a>
+  <a href="/components/quantity-box.html" class="nav-item active">Quantity Box</a>
   <a href="/components/radio.html" class="nav-item">Radio</a>
   <a href="/components/segmented-control.html" class="nav-item">Segmented Control</a>
-  <a href="/components/select-menu.html" class="nav-item active">Select Menu</a>
   <a href="/components/spinner.html" class="nav-item">Spinner</a>
   <a href="/components/tabs.html" class="nav-item">Tabs</a>
   <a href="/components/tag.html" class="nav-item">Tag</a>
@@ -192,16 +192,16 @@
     </aside>
     <div class="main">
       <div class="topbar">
-        <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/index.html">Introduction</a><span class="bc-sep">›</span><a href="/components/button.html">Components</a><span class="bc-sep">›</span><span class="bc-current">Select Menu</span></nav>
+        <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/index.html">Introduction</a><span class="bc-sep">›</span><a href="/index.html">Components</a><span class="bc-sep">›</span><span class="bc-current">Quantity Box</span></nav>
       </div>
       <div class="content-area">
-        <h1 id="select-menu">Select Menu</h1><div class="component-preview" style="background:#fff;padding:0;overflow:hidden;">  <img src="../assets/images/select-menu.png" alt="select-menu preview"    style="width:100%;height:auto;display:block;"></div>
-<p>A form input that presents a single-select dropdown of predefined options. For rich filtering or multi-select use cases, see Dropdown or Combobox.</p>
+        <h1 id="quantity-box">Quantity Box</h1><div class="component-preview" style="background:#fff;padding:0;overflow:hidden;">  <img src="../assets/images/quantity-box.png" alt="quantity-box preview"    style="width:100%;height:auto;display:block;"></div>
+<p>A compact numeric input control with increment and decrement buttons, used wherever a user needs to specify a count — most commonly in add-to-cart and cart line-item flows.</p>
 <p><strong>Figma variant properties:</strong> Style=Filled/Outlined</p>
 <hr />
 <h2 id="preview">Preview</h2>
 <blockquote>
-<p>Component preview image — to be added manually from Figma export.</p>
+<p>Component preview image — fetched from Figma export.</p>
 </blockquote>
 <hr />
 <h2 id="variants">Variants</h2>
@@ -220,12 +220,6 @@
 </tr>
 <tr>
 <td>Focused</td>
-</tr>
-<tr>
-<td>Open</td>
-</tr>
-<tr>
-<td>Selected</td>
 </tr>
 <tr>
 <td>Disabled</td>
@@ -248,34 +242,34 @@
 </thead>
 <tbody>
 <tr>
-<td><code>options</code></td>
-<td>Option[]</td>
-<td>[]</td>
-<td>Array of {value, label} objects</td>
-</tr>
-<tr>
 <td><code>value</code></td>
-<td>string</td>
-<td>null</td>
-<td>Selected value</td>
+<td>number</td>
+<td>1</td>
+<td>Current quantity</td>
 </tr>
 <tr>
-<td><code>label</code></td>
-<td>string</td>
-<td>""</td>
-<td>Field label</td>
+<td><code>min</code></td>
+<td>number</td>
+<td>1</td>
+<td>Minimum allowed value</td>
 </tr>
 <tr>
-<td><code>placeholder</code></td>
-<td>string</td>
-<td>"Select..."</td>
-<td>Placeholder text</td>
+<td><code>max</code></td>
+<td>number</td>
+<td>999</td>
+<td>Maximum allowed value</td>
+</tr>
+<tr>
+<td><code>step</code></td>
+<td>number</td>
+<td>1</td>
+<td>Increment/decrement step</td>
 </tr>
 <tr>
 <td><code>style</code></td>
-<td>"filled"</td>
+<td>"filled" | "outlined"</td>
 <td>"outlined"</td>
-<td>"outlined"</td>
+<td>Visual style</td>
 </tr>
 <tr>
 <td><code>disabled</code></td>
@@ -293,7 +287,7 @@
 <td><code>errorMessage</code></td>
 <td>string</td>
 <td>null</td>
-<td>Error message</td>
+<td>Error message shown below</td>
 </tr>
 </tbody>
 </table>
@@ -301,23 +295,23 @@
 <h2 id="usage">Usage</h2>
 <h3 id="do">Do</h3>
 <ul>
-<li>Use for selecting one option from a defined list in a form.</li>
-<li>Always include a visible label.</li>
-<li>Include a neutral placeholder (not a valid option).</li>
+<li>Use for numeric quantities in cart or order-entry contexts.</li>
+<li>Enforce a sensible minimum (usually 1) and a max based on available stock.</li>
+<li>Pair with the Add to Cart Button component.</li>
 </ul>
 <h3 id="dont">Don't</h3>
 <ul>
-<li>Don't use Select for more than 10 options without search — use Combobox.</li>
-<li>Don't use Select for non-form actions — use Dropdown.</li>
-<li>Don't pre-select an option when no default exists.</li>
+<li>Don't use for non-integer or fractional quantities without clear indication.</li>
+<li>Don't use for general form number inputs — use a plain Input instead.</li>
+<li>Don't allow the user to type values outside the min/max without validation feedback.</li>
 </ul>
 <hr />
 <h2 id="accessibility">Accessibility</h2>
 <ul>
-<li>Associate <code>&lt;label&gt;</code> with <code>&lt;select&gt;</code> via <code>for</code>/<code>id</code>.</li>
-<li><code>aria-invalid</code> on error.</li>
-<li><code>aria-describedby</code> for error message.</li>
-<li>Keyboard: space to open, arrows to navigate, Enter to select.</li>
+<li>The input must have a visible label or <code>aria-label</code>.</li>
+<li>Decrement and increment buttons need <code>aria-label</code> ("Decrease quantity" / "Increase quantity").</li>
+<li>Disable the decrement button at <code>min</code> and increment button at <code>max</code>.</li>
+<li><code>aria-invalid</code> and <code>aria-describedby</code> on error.</li>
 </ul>
 <hr />
 <h2 id="tokens-used">Tokens Used</h2>
@@ -327,6 +321,7 @@
 <li><code>color.semantic.Border.Focus</code></li>
 <li><code>borderRadius.S</code></li>
 <li><code>typography.text.M.regular</code></li>
+<li><code>spacing.S</code></li>
 <li><code>spacing.M</code></li>
 </ul>
       </div>

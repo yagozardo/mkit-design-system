@@ -48,6 +48,7 @@ COMPONENTS = {
     "tabs":              (ADVANCED, "3192:531"),
     "tips":              (ADVANCED, "210:678"),
     "tree-view":         (ADVANCED, "2751:3675"),
+    "quantity-box":      (ADVANCED, "2344:18041"),
 }
 
 def figma_get(path):
@@ -117,7 +118,7 @@ if errors:
     for kind, name, msg in errors:
         print(f"    [{kind}] {name}: {msg}")
 
-# ── Check for missing: popover, select-menu ──────────────────────────────────
-missing = ["popover", "select-menu"]
+# ── Check for missing ────────────────────────────────────────────────────────
+missing = ["popover"]
 print(f"\n  Note: {missing} have no component set in Figma — skipped (placeholders remain).")
 print("\nDone. Images saved to assets/images/")

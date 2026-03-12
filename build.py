@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-eComm Design System — Static Site Generator
+MKIT Design System — Static Site Generator
 Phase 4 build script. Run: python3 build.py
 Reads: assets/tokens.json, assets/ia.json, content/**/*.md
 Writes: index.html, foundations/*.html, components/*.html, icons/*.html,
@@ -40,7 +40,7 @@ def build_tokens_css():
     lines.append(f"  --font-heading: '{tokens['typography']['fontFamily']['heading']}', sans-serif;")
     lines.append(f"  --font-body: '{tokens['typography']['fontFamily']['body']}', sans-serif;")
     for name, p in tokens["typography"]["heading"].items():
-        n = name.lower().replace("xl","xl").replace("xs","xs")
+        n = name.lower()
         lines.append(f"  --heading-{n}-size: {p['fontSize']}px;")
         lines.append(f"  --heading-{n}-lh: {p['lineHeight']}px;")
         lines.append(f"  --heading-{n}-ls: {p['letterSpacing']}px;")
@@ -202,7 +202,7 @@ def page_shell(title: str, content_html: str, active_path: str,
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{html_mod.escape(title)} — eComm Design System</title>
+  <title>{html_mod.escape(title)} — MKIT Design System</title>
   <link rel="preconnect" href="https://fonts.bunny.net">
   <link href="https://fonts.bunny.net/css?family=inter:400,600&display=swap" rel="stylesheet">
   <link href="https://api.fontshare.com/v2/css?f[]=satoshi@700&display=swap" rel="stylesheet">
@@ -329,7 +329,7 @@ def page_shell(title: str, content_html: str, active_path: str,
   <div class="layout">
     <aside class="sidebar" aria-label="Main navigation">
       <div class="sidebar-logo">
-        eComm DS
+        MKIT DS
         <span>Design System</span>
       </div>
       <nav class="sidebar-nav">
@@ -363,11 +363,14 @@ def page_shell(title: str, content_html: str, active_path: str,
 
 # ─── 4. MARKDOWN CONVERTER ────────────────────────────────────────────────────
 def md_to_html(text: str) -> str:
-    return md_lib.markdown(
+    result = md_lib.markdown(
         text,
         extensions=["tables", "fenced_code", "attr_list", "toc"],
         extension_configs={"toc": {"permalink": False}}
     )
+    # Rewrite any .md hrefs to .html (handles cross-page links in source markdown)
+    result = re.sub(r'href="([^"]+)\.md"', r'href="\1.html"', result)
+    return result
 
 
 # ─── 5. ENHANCED COLOR PAGE ───────────────────────────────────────────────────
@@ -486,9 +489,10 @@ def render_borders_page(md_text: str) -> str:
 # ─── 9. HOME PAGE ─────────────────────────────────────────────────────────────
 def render_home_page(md_text: str) -> str:
     intro_html = md_to_html(md_text)
+    comp_count = len(list((CONTENT / "components").glob("*.md")))
     cards = [
         ("🎨", "Foundations", "Color, typography, spacing, elevation, and borders.", "/foundations/color.html"),
-        ("🧩", "Components", "33 reusable UI building blocks.", "/components/button.html"),
+        ("🧩", "Components", f"{comp_count} reusable UI building blocks.", "/components/button.html"),
         ("✦",  "Icons",      "Lucide open-source icon library.", "/icons/index.html"),
         ("📖", "Getting Started", "How to use Figma libraries and tokens.", "/resources/getting-started.html"),
     ]
@@ -560,7 +564,7 @@ def write_page(out_path: Path, title: str, content_html: str,
 
 # ─── 12. MAIN BUILD ───────────────────────────────────────────────────────────
 def main():
-    print("Building eComm Design System site...")
+    print("Building MKIT Design System site...")
 
     # Step 1 — CSS
     print("\n[1/3] Generating tokens.css")
@@ -616,7 +620,7 @@ def main():
             SITE / "components" / f"{slug}.html", label,
             render_component_page(md, slug),
             f"/components/{slug}.html",
-            [("Introduction", "/index.html"), ("Components", "/components/button.html"), (label, f"/components/{slug}.html")],
+            [("Introduction", "/index.html"), ("Components", "/index.html"), (label, f"/components/{slug}.html")],
             depth=1
         )
 
